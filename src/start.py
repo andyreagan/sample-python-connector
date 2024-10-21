@@ -1,10 +1,11 @@
-from utils import Envirionment
+# from utils import Envirionment
+from utils.Envirionment import Envirionment
 import sys
 import Queue
 import logging
-from processor import *
-from stream    import GnipJsonStreamClient
-from metrics   import Metrics
+from processor.SaveThread import SaveThread
+from stream.GnipJsonStreamClient import GnipJsonStreamClient
+# from metrics   import Metrics
 
 logr = logging.getLogger('Enviroinment Logger')
 
@@ -22,7 +23,7 @@ def processors_for_queue(config, queue):
         processors.append(Redis(queue))
     elif config.processtype == "fileandmetrics":
         if "sql_db" not in config.kwargs:
-            config.logr.error("No database configured.")
+            logr.error("No database configured.")
             sys.exit()
         processors.append(SaveThread(queue))
         processors.append(Metrics(queue))
@@ -41,10 +42,12 @@ client = GnipJsonStreamClient(
     configuration.password,
     configuration.filepath,
     configuration.rollduration,
-    compressed=configuration.compressed
+    compressed=True,
     )
 
 client.run()
-self.logr.debug("Made it here")
-for processor in processors_for_queue(queue):
-    processor.run()
+logr.debug("Made it here")
+# processor = SaveThread(queue)
+# processor.run()
+processor = SaveThread(queue, configuration, "data")
+processor.run()

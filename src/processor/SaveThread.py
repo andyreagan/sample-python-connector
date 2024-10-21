@@ -12,10 +12,10 @@ write_lock = multiprocessing.RLock()
 
 
 class SaveThread(BaseProcessor):
-    def __init__(self, _upstream, _feedname, _savepath):
-        BaseProcessor.__init__(self, _upstream)
+    def __init__(self, _upstream, _environment, _savepath):
+        BaseProcessor.__init__(self, _upstream, _environment)
         self.savepath = _savepath
-        self.feedName = _feedname
+        # self.feedName = _feedname
         self.timeStart = time.gmtime(time.time())
 
     def _run(self):
@@ -52,7 +52,7 @@ class SaveThread(BaseProcessor):
             self.logr.info("directory created (%s)" % file_path)
         except OSError:
             self.logr.info("directory exists (%s)" % file_path)
-        name = self.feedName + "_"
+        name = ""
         name += "-".join([
             "%d" % self.timeStart.tm_year,
             "%02d" % self.timeStart.tm_mon,

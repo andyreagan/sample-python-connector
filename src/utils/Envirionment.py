@@ -7,7 +7,6 @@ import sys
 
 RELATIVE_CONFIG_PATH = "../../config/gnip.cfg"
 
-
 class Envirionment(object):
     def __init__(self):
         # Just for reference, not all that clean right now
